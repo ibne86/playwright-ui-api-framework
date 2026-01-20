@@ -25,29 +25,47 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
-  use: {
-    /* Base URL to use in actions like `await page.goto('')`. */
-    // baseURL: 'http://localhost:3000',
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
-  },
+use: {
+  trace: "on-first-retry",
+  screenshot: "only-on-failure",
+  video: "retain-on-failure",
+},
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      testMatch: ["ui/**/*.spec.js"],
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: process.env.UI_BASE_URL || "https://www.saucedemo.com",
+      },
     },
 
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      testMatch: ["ui/**/*.spec.js"],
+      use: {
+        ...devices['Desktop Firefox'],
+        baseURL: process.env.UI_BASE_URL || "https://www.saucedemo.com",
+      },
     },
 
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      testMatch: ["ui/**/*.spec.js"],
+      use: {
+        ...devices['Desktop Safari'],
+        baseURL: process.env.UI_BASE_URL || "https://www.saucedemo.com",
+      },
+    },
+
+    {
+      name: "api-reqres",
+      testMatch: ["api/**/*.spec.js"],
+      use: {
+        baseURL: process.env.API_BASE_URL || "https://reqres.in",
+      },
     },
 
     /* Test against mobile viewports. */
