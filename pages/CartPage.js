@@ -8,9 +8,16 @@ export class CartPage {
 
     // Remove button
     this.removeBackpackBtn = page.getByTestId("remove-sauce-labs-backpack");
+
+    // Checkout button
+    this.checkoutBtn = page.getByTestId("checkout");
   }
 
   async removeBackpack() {
     await this.removeBackpackBtn.click();
+  }
+
+  async clickCheckout() {
+    await this.checkoutBtn.click();
   }
 }
