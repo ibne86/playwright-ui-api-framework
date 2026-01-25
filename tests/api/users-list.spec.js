@@ -3,7 +3,7 @@ import { test, expect } from "@playwright/test";
 test.describe("ReqRes - Users list", () => {
   test("SMOKE: GET /api/users?page=2 returns 200", async ({ request }) => {
     const response = await request.get("/api/users?page=2");
-    expect(res.status()).toBe(200);
+    expect(response.status()).toBe(200);
   });
 
   test("CONTRACT: response has expected shape", async ({ request }) => {
