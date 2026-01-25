@@ -66,6 +66,10 @@ use: {
       testMatch: ["api/**/*.spec.js"],
       use: {
         baseURL: process.env.API_BASE_URL || "https://reqres.in",
+        extraHTTPHeaders: {
+          "x-api-key": process.env.REQRES_API_KEY ?? "",
+          "user-agent": "reqres-qa-tests/1.0",
+        },
       },
     },
 
