@@ -7,8 +7,8 @@ test.describe("ReqRes - Users list", () => {
   });
 
   test("CONTRACT: response has expected shape", async ({ request }) => {
-    const res = await request.get("/api/users?page=2");
-    const body = await res.json();
+    const response = await request.get("/api/users?page=2");
+    const body = await response.json();
 
     expect(body).toEqual(
       expect.objectContaining({
@@ -22,8 +22,8 @@ test.describe("ReqRes - Users list", () => {
   });
 
   test("DATA: first user has required fields", async ({ request }) => {
-    const res = await request.get("/api/users?page=2");
-    const body = await res.json();
+    const response = await request.get("/api/users?page=2");
+    const body = await response.json();
 
     expect(body.data.length).toBeGreaterThan(0);
 
