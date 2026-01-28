@@ -1,38 +1,31 @@
-import { test, expect } from "@playwright/test";
+import { test } from "@playwright/test";
+import { usersApi } from "../../api/usersApi.js";
+import {
+  expectStatus,
+  expectSingleUserContract,
+  expectExactUser,
+} from "../../api/assertions.js";
 import { reqresUsers } from "../../test-data/api/users.js";
 
 test.describe("ReqRes - Single user (GET /api/users/2)", () => {
-  test("SMOKE: returns 200", async ({ request }) => {
-    const response = await request.get("/api/users/2");
-    expect(response.status()).toBe(200);
+  let api;
+
+  test.beforeEach(({ request }) => {
+    api = new usersApi(request);
   });
 
-  test("CONTRACT: response has expected shape", async ({ request }) => {
-    const response = await request.get("/api/users/2");
-    const body = await response.json();
-
-    expect(body).toEqual(
-      expect.objectContaining({
-        data: expect.any(Object),
-        support: expect.any(Object),
-      })
-    );
-
-    expect(body.data).toEqual(
-      expect.objectContaining({
-        id: expect.any(Number),
-        email: expect.any(String),
-        first_name: expect.any(String),
-        last_name: expect.any(String),
-        avatar: expect.any(String),
-      })
-    );
+  test("SMOKE: returns 200", async () => {
+    const { response } = await api.getSingleUser(2);
+    expectStatus(response, 200);
   });
 
-  test("DATA: returns expected user #2", async ({ request }) => {
-    const response = await request.get("/api/users/2");
-    const body = await response.json();
+  test("CONTRACT: response has expected shape", async () => {
+    const { body } = await api.getSingleUser(2);
+    expectSingleUserContract(body);
+  });
 
-    expect(body.data).toEqual(reqresUsers.user2);
+  test("DATA: returns expected user #2", async () => {
+    const { body } = await api.getSingleUser(2);
+    expectExactUser(body.data, reqresUsers.user2);
   });
 });
